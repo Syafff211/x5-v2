@@ -238,7 +238,7 @@ export function LandingPage() {
                 Kelas X-5, <span className="text-gradient">solid dan berprestasi</span>
               </h2>
               <p className="mt-4 leading-relaxed text-muted-foreground">
-                Kami adalah 32 siswa kelas X-5 SMAN 1 Purbalingga yang percaya bahwa belajar jadi lebih menyenangkan
+                Kami adalah 36 siswa kelas X-5 SMAN 1 Purbalingga yang percaya bahwa belajar jadi lebih menyenangkan
                 ketika terorganisir dengan baik. Platform ini kami gunakan setiap hari untuk absensi, mengumpulkan
                 tugas, melihat nilai, dan tetap terhubung satu sama lain.
               </p>
@@ -281,7 +281,7 @@ export function LandingPage() {
                 </div>
                 <div className="space-y-3">
                   {[
-                    ['Kehadiran hari ini', '30 / 32 siswa', 'bg-emerald-500'],
+                    ['Kehadiran hari ini', '36 siswa', 'bg-emerald-500'],
                     ['Tugas aktif', '5 tugas', 'bg-indigo-500'],
                     ['Rata-rata nilai', '87.4', 'bg-fuchsia-500'],
                     ['Pesan belum dibaca', '2 pesan', 'bg-amber-500'],
@@ -323,7 +323,7 @@ export function LandingPage() {
               <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">{content.footer_text}</p>
               <div className="mt-5 flex gap-2">
                 {[
-                  [Instagram, 'Instagram', 'https://instagram.com'],
+                  [Instagram, 'Instagram', 'https://instagram.com/'],
                   [Youtube, 'YouTube', 'https://youtube.com'],
                   [Github, 'GitHub', 'https://github.com'],
                   [Mail, 'Email', 'mailto:support@x5-sman1.web.id'],
@@ -358,7 +358,7 @@ export function LandingPage() {
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li className="flex items-start gap-2">
                   <MapPin className="mt-0.5 h-4 w-4 shrink-0" />
-                  <span>Jl. MT Haryono No.9, Purbalingga, Jawa Tengah</span>
+                  <span>Jl. MT. Haryono, Dusun 1, Purbalingga Kulon, Kec. Purbalingga, Kabupaten Purbalingga, Jawa Tengah 53312, Purbalingga, Jawa Tengah</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Mail className="h-4 w-4 shrink-0" />
