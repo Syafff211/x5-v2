@@ -1,36 +1,60 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { Loader2 } from 'lucide-react'
 import { useAuthStore } from '@/store/auth-store'
 import { useDataStore } from '@/store/data-store'
+import { canAccessPath, isAdminLevel, HOME_PATH, LOGIN_PATH } from '@/lib/rbac'
 import type { Role } from '@/types/database'
 
-export function AuthGuard({ role, children }: { role: Role; children: React.ReactNode }) {
+/**
+ * `area` menggantikan pemeriksaan peran tunggal supaya `admin` dan
+ * `super_admin` sama-sama bisa membuka /admin, sementara rute khusus
+ * super admin tetap terkunci lewat `canAccessPath`.
+ */
+export function AuthGuard({
+  area,
+  children,
+}: {
+  area: 'student' | 'admin'
+  children: React.ReactNode
+}) {
   const router = useRouter()
+  const pathname = usePathname()
   const profile = useAuthStore((s) => s.profile)
   const initialize = useAuthStore((s) => s.initialize)
   const [checked, setChecked] = useState(false)
 
   useEffect(() => {
     let active = true
+    setChecked(false)
     ;(async () => {
-      // Rehydrate from Supabase session when configured.
       if (!useAuthStore.getState().initialized) await initialize()
       if (!active) return
 
       const current = useAuthStore.getState().profile
-      if (!current) {
-        router.replace(role === 'admin' ? '/auth/admin' : '/auth/login')
-        return
-      }
-      if (current.role !== role) {
-        router.replace(current.role === 'admin' ? '/admin' : '/dashboard')
+      const role = current?.role as Role | undefined
+
+      // Belum login -> ke halaman login yang sesuai area.
+      if (!current || !role) {
+        router.replace(area === 'admin' ? LOGIN_PATH.admin : LOGIN_PATH.student)
         return
       }
 
-      // Tarik data terbaru dari Supabase sekali per sesi.
+      // Salah area (mis. siswa membuka /admin) -> lempar ke rumahnya.
+      const inRightArea = area === 'admin' ? isAdminLevel(role) : role === 'student'
+      if (!inRightArea) {
+        router.replace(HOME_PATH[role])
+        return
+      }
+
+      // Admin biasa membuka rute khusus super admin -> tolak.
+      if (!canAccessPath(role, pathname)) {
+        router.replace('/admin?denied=1')
+        return
+      }
+
       if (!useDataStore.getState().hydrated) {
         await useDataStore.getState().hydrateFromSupabase()
       }
@@ -41,7 +65,7 @@ export function AuthGuard({ role, children }: { role: Role; children: React.Reac
       active = false
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [role])
+  }, [area, pathname])
 
   if (!checked || !profile) {
     return (
