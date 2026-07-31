@@ -1,4 +1,4 @@
-export type Role = 'student' | 'admin'
+export type Role = 'student' | 'admin' | 'super_admin'
 export type AttendanceStatus = 'present' | 'late' | 'permission' | 'sick' | 'absent'
 export type GradeType = 'daily' | 'midterm' | 'final'
 export type MediaType = 'image' | 'video'
